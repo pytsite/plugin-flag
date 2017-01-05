@@ -1,0 +1,17 @@
+{
+  "description": {
+    "en": "Flag",
+    "ru": "Flag",
+    "uk": "Flag"
+  },
+  "url": "https://github.com/pytsite/plugin-flag",
+  "author": {
+    "name": "Alexander Shepetko",
+    "email": "a@shepetko.com",
+    "url": "https://shepetko.com"
+  },
+  "requires": {
+    "packages": [],
+    "plugins": []
+  }
+}
