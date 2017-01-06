@@ -11,6 +11,8 @@ __license__ = 'MIT'
 def setup():
     """`pytsite.setup` event handler.
     """
+    _auth.switch_user_to_system()
+
     # Allow ordinary users to create, modify and delete images
     user_role = _auth.get_role('user')
     user_role.permissions = list(user_role.permissions) + [
@@ -19,8 +21,10 @@ def setup():
     ]
     user_role.save()
 
+    _auth.restore_user()
 
-def odm_entity_delete(entity: _odm=_odm.model.Entity):
+
+def odm_entity_delete(entity: _odm.model.Entity):
     """'pytsite.odm.entity.delete' event handler.
     """
     # Delete all related flags on entity deletion.
