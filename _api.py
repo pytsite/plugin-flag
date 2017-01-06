@@ -7,7 +7,7 @@ __email__ = 'a@shepetko.com'
 __license__ = 'MIT'
 
 _CACHE_TTL = 300  # 5 min
-_cache_p = _cache.create_pool('pytsite.flag')
+_cache_p = _cache.create_pool('flag')
 
 
 def count(entity: _odm.model.Entity, flag_type: str = 'default') -> int:
@@ -87,7 +87,7 @@ def flag(entity: _odm.model.Entity, author: _auth.model.AbstractUser = None, fla
     e.f_set('entity', entity).f_set('author', author.uid).f_set('type', flag_type).f_set('score', score)
     e.save()
 
-    _events.fire('pytsite.flag.flag', entity=entity, user=author, flag_type=flag_type, score=score)
+    _events.fire('flag.flag', entity=entity, user=author, flag_type=flag_type, score=score)
 
     return count(entity, flag_type)
 
@@ -109,7 +109,7 @@ def unflag(entity: _odm.model.Entity, author: _auth.model.AbstractUser = None, f
     with fl:
         fl.delete()
 
-    _events.fire('pytsite.flag.unflag', entity=entity, user=author, flag_type=flag_type)
+    _events.fire('flag.unflag', entity=entity, user=author, flag_type=flag_type)
 
     return count(entity, flag_type)
 
