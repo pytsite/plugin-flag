@@ -14,7 +14,6 @@ def _init():
     from . import _model, _eh
 
     # Resources
-    lang.register_package(__name__)  # For ODM UI
     lang.register_package(__name__, alias='flag')
     tpl.register_package(__name__, alias='flag')
     assetman.register_package(__name__, alias='flag')

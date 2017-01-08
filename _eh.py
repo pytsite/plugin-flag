@@ -16,8 +16,8 @@ def setup():
     # Allow ordinary users to create, modify and delete images
     user_role = _auth.get_role('user')
     user_role.permissions = list(user_role.permissions) + [
-        'pytsite.odm_perm.create.flag',
-        'pytsite.odm_perm.delete_own.flag',
+        'pytsite.odm_auth.create.flag',
+        'pytsite.odm_auth.delete_own.flag',
     ]
     user_role.save()
 
