@@ -55,7 +55,7 @@ class Like(_widget.Abstract):
     def counter(self) -> bool:
         return self._counter
 
-    def get_html_em(self, **kwargs) -> _html.Element:
+    def _get_element(self, **kwargs) -> _html.Element:
         current_user = _auth.get_current_user()
 
         if self.flagged:
