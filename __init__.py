@@ -11,7 +11,7 @@ __license__ = 'MIT'
 
 def _init():
     from pytsite import assetman, odm, tpl, lang, events, http_api, permissions
-    from . import _model, _eh
+    from . import _model, _eh, _http_api
 
     # Resources
     lang.register_package(__name__, alias='flag')
@@ -25,7 +25,7 @@ def _init():
     odm.register_model('flag', _model.Flag)
 
     # HTTP API aliases
-    http_api.register_handler('flag', __name__ + '.http_api')
+    http_api.handle('PATCH', 'flag/toggle/<model>/<uid>', _http_api.patch_toggle, 'flag@toggle')
 
     # Event listeners
     events.listen('pytsite.setup', _eh.setup)

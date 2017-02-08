@@ -4,6 +4,10 @@
 ## Changelog
 
 
+### 0.1.5 (2017-02-08)
+Fixed HTTP API handler.
+
+
 ### 0.1.4 (2017-01-21)
 Support latest PytSite `widget`'s changes.
 

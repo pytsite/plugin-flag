@@ -1,17 +1,19 @@
 # PytSite Flag HTTP API
 
-Перед изучением этого документа убедитесь, что разобрались с [PytSite HTTP API](../../../http_api/doc/ru/index.md).
 
-
-## PATCH flag/toggle
+## PATCH flag/toggle/\<model\>/\<uid\>
 
 Установка/снятие отметки для сущности. 
 
 
 ### Аргументы
-- *required* **str** `access_token`. [Токен доступа](../../../auth/doc/ru/http_api.md).
-- *required* **str** `model`. Модель сущности.
-- *required* **str** `uid`. UID сущности.
+
+- `model`. Модель сущности.
+- `uid`. UID сущности.
+
+
+### Параметры
+- *required* **str** `access_token`. [Токен доступа](https://github.com/pytsite/pytsite/blob/devel/pytsite/auth/doc/ru/http_api.md).
 
 
 ### Формат ответа
@@ -29,9 +31,7 @@
 ```
 curl -X PATCH \
 -d access_token=77aaea01a5e58ac3a7d114f418231fa6 \
--d model=product \
--d uid=57a304e2523af552d17a4dfb \
-http://test.com/api/1/flag/toggle
+http://test.com/api/1/flag/toggle/article/57a304e2523af552d17a4dfb
 ```
 
 
@@ -42,3 +42,8 @@ http://test.com/api/1/flag/toggle
     "count": 728
 }
 ```
+
+
+## Смотрите также
+
+- [PytSite HTTP API](https://github.com/pytsite/pytsite/blob/devel/pytsite/http_api/doc/ru/index.md)
