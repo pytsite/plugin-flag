@@ -2,7 +2,7 @@
 """
 # Public API
 from . import _widget as widget
-from ._api import flag, average, count, delete, is_flagged, sum, toggle, unflag
+from ._api import define, flag, average, count, delete, is_flagged, total, toggle, unflag
 
 __author__ = 'Alexander Shepetko'
 __email__ = 'a@shepetko.com'
@@ -24,12 +24,18 @@ def _init():
     # ODM models
     odm.register_model('flag', _model.Flag)
 
-    # HTTP API aliases
-    http_api.handle('PATCH', 'flag/toggle/<model>/<uid>', _http_api.patch_toggle, 'flag@toggle')
+    # HTTP API handlers
+    http_api.handle('PATCH', 'flag/<flag_type>/<model>/<uid>', _http_api.patch, 'flag@patch')
+    http_api.handle('GET', 'flag/count/<flag_type>/<model>/<uid>', _http_api.get_count, 'flag@get_count')
+    http_api.handle('GET', 'flag/status/<flag_type>/<model>/<uid>', _http_api.get_status, 'flag@get_status')
 
     # Event listeners
     events.listen('pytsite.setup', _eh.setup)
     events.listen('pytsite.odm.entity.delete', _eh.odm_entity_delete)
+
+    # Define default flag types
+    define('like')
+    define('bookmark')
 
 
 _init()

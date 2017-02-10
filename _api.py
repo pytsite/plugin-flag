@@ -7,18 +7,52 @@ __email__ = 'a@shepetko.com'
 __license__ = 'MIT'
 
 _CACHE_TTL = 300  # 5 min
+_flag_types = {}
 _cache_p = _cache.create_pool('flag')
 
 
-def count(entity: _odm.model.Entity, flag_type: str = 'default') -> int:
-    """Get flags count for the entity.
+def define(flag_type: str, default: float = 1.0, min_score: float = 1.0, max_score: float = 1.0):
+    """Define a flag type.
     """
+    if flag_type in _flag_types:
+        raise RuntimeError("Flag type '{}' is already defined".format(flag_type))
+
+    _flag_types[flag_type] = {
+        'default': default,
+        'min_score': min_score,
+        'max_score': max_score,
+    }
+
+
+def find_entities(flag_type: str = 'like', author: _auth.model.AbstractUser = None) -> _odm.Finder:
+    """Get flagged entities.
+    """
+    if flag_type not in _flag_types:
+        raise RuntimeError("Flag type '{}' is not defined".format(flag_type))
+
+    f = _odm.find('flag').eq('type', flag_type)
+
+    if author and not author.is_anonymous:
+        f.eq('author', author)
+
+    return f
+
+
+def count(entity: _odm.model.Entity, flag_type: str = 'like') -> int:
+    """Get flag count for the entity.
+    """
+    if flag_type not in _flag_types:
+        raise RuntimeError("Flag type '{}' is not defined".format(flag_type))
+
     return _odm.find('flag').eq('entity', entity).eq('type', flag_type).count()
 
 
-def sum(entity: _odm.model.Entity, flag_type: str = 'default') -> float:
-    """Get sum of scores for the entity.
+def total(entity: _odm.model.Entity, flag_type: str = 'like') -> float:
+    """Get sum of flag scores for the entity.
     """
+    if flag_type not in _flag_types:
+        raise RuntimeError("Flag type '{}' is not defined".format(flag_type))
+
     c_key = 'sum.{}.{}'.format(entity.id, flag_type)
     if _cache_p.has(c_key):
         return _cache_p.get(c_key)
@@ -36,9 +70,12 @@ def sum(entity: _odm.model.Entity, flag_type: str = 'default') -> float:
     return _cache_p.put(c_key, v, _CACHE_TTL)
 
 
-def average(entity: _odm.model.Entity, flag_type: str = 'default') -> float:
+def average(entity: _odm.model.Entity, flag_type: str = 'like') -> float:
     """Get average score for the entity.
     """
+    if flag_type not in _flag_types:
+        raise RuntimeError("Flag type '{}' is not defined".format(flag_type))
+
     c_key = 'average.{}.{}'.format(entity.id, flag_type)
     if _cache_p.has(c_key):
         return _cache_p.get(c_key)
@@ -56,11 +93,11 @@ def average(entity: _odm.model.Entity, flag_type: str = 'default') -> float:
     return _cache_p.put(c_key, v, _CACHE_TTL)
 
 
-def is_flagged(entity: _odm.model.Entity, author: _auth.model.AbstractUser = None, flag_type: str = 'default') -> bool:
+def is_flagged(entity: _odm.model.Entity, author: _auth.model.AbstractUser, flag_type: str = 'like') -> bool:
     """Check if an entity is flagged by a user.
     """
-    if not author:
-        author = _auth.get_current_user()
+    if flag_type not in _flag_types:
+        raise RuntimeError("Flag type '{}' is not defined".format(flag_type))
 
     if author.is_anonymous:
         return False
@@ -70,18 +107,22 @@ def is_flagged(entity: _odm.model.Entity, author: _auth.model.AbstractUser = Non
     return bool(f.count())
 
 
-def flag(entity: _odm.model.Entity, author: _auth.model.AbstractUser = None, flag_type: str = 'default',
+def flag(entity: _odm.model.Entity, author: _auth.model.AbstractUser, flag_type: str = 'like',
          score: float = 1.0) -> int:
     """Flag the entity.
     """
-    if not author:
-        author = _auth.get_current_user()
-
     if author.is_anonymous:
-        raise RuntimeError("Flag's author cannot be anonymous.")
+        raise RuntimeError("Flag's author cannot be anonymous")
 
     if is_flagged(entity, author):
         return
+
+    f_info = _flag_types[flag_type]
+
+    if score < f_info['min_score']:
+        score = f_info['min_score']
+    elif score > f_info['max_score']:
+        score = f_info['max_score']
 
     e = _odm.dispense('flag')
     e.f_set('entity', entity).f_set('author', author.uid).f_set('type', flag_type).f_set('score', score)
@@ -92,14 +133,11 @@ def flag(entity: _odm.model.Entity, author: _auth.model.AbstractUser = None, fla
     return count(entity, flag_type)
 
 
-def unflag(entity: _odm.model.Entity, author: _auth.model.AbstractUser = None, flag_type: str = 'default') -> int:
+def unflag(entity: _odm.model.Entity, author: _auth.model.AbstractUser, flag_type: str = 'like') -> int:
     """Remove flag.
     """
-    if not author:
-        author = _auth.get_current_user()
-
     if author.is_anonymous:
-        raise RuntimeError("Flag's author cannot be anonymous.")
+        raise RuntimeError("Flag's author cannot be anonymous")
 
     if not is_flagged(entity, author):
         return
@@ -114,15 +152,12 @@ def unflag(entity: _odm.model.Entity, author: _auth.model.AbstractUser = None, f
     return count(entity, flag_type)
 
 
-def toggle(entity: _odm.model.Entity, author: _auth.model.AbstractUser = None, flag_type: str = 'default',
+def toggle(entity: _odm.model.Entity, author: _auth.model.AbstractUser, flag_type: str = 'like',
            score: float = 1.0) -> int:
     """Toggle flag.
     """
-    if not author:
-        author = _auth.get_current_user()
-
     if author.is_anonymous:
-        raise RuntimeError("Flag's author cannot be anonymous.")
+        raise RuntimeError("Flag's author cannot be anonymous")
 
     if is_flagged(entity, author, flag_type):
         return unflag(entity, author, flag_type)

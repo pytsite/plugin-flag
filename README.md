@@ -4,6 +4,10 @@
 ## Changelog
 
 
+### 0.2 (2017-02-10)
+Added flag types definition.
+
+
 ### 0.1.5 (2017-02-08)
 Fixed HTTP API handler.
 
