@@ -7,10 +7,7 @@ $(window).on('pytsite.widget.init:plugins.flag._widget.Like', function (e, widge
         if (widget.em.hasClass('flagged') && !confirm(t('flag@dislike_confirmation')))
             return;
 
-        pytsite.httpApi.patch('flag/toggle', {
-            model: em.data('model'),
-            uid: em.data('uid')
-        }).done(function (data) {
+        pytsite.httpApi.patch('flag/like/' + em.data('model') + '/' + em.data('uid')).done(function (data) {
             if (data['status']) {
                 em.addClass('flagged');
                 em.find('a').attr('title', t('flag@dislike'));

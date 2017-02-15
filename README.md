@@ -4,6 +4,11 @@
 ## Changelog
 
 
+### 0.3 (2017-02-15)
+- HTTP API totally reworked.
+- API function `flag()` renamed to `create()`, `unflag()` renamed to `delete()`, `delete()` renamed to `delete_all()`.
+
+
 ### 0.2 (2017-02-10)
 Added flag types definition.
 

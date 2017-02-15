@@ -1,4 +1,4 @@
-"""PytSite Flag API.
+"""PytSite Flag Plugin API
 """
 from pytsite import odm as _odm, auth as _auth, cache as _cache, events as _events
 
@@ -24,15 +24,21 @@ def define(flag_type: str, default: float = 1.0, min_score: float = 1.0, max_sco
     }
 
 
+def is_defined(flag_type: str) -> bool:
+    """Check whether a flag type is defined.
+    """
+    return flag_type in _flag_types
+
+
 def find_entities(flag_type: str = 'like', author: _auth.model.AbstractUser = None) -> _odm.Finder:
-    """Get flagged entities.
+    """Find flagged entities.
     """
     if flag_type not in _flag_types:
         raise RuntimeError("Flag type '{}' is not defined".format(flag_type))
 
     f = _odm.find('flag').eq('type', flag_type)
 
-    if author and not author.is_anonymous:
+    if author:
         f.eq('author', author)
 
     return f
@@ -99,23 +105,17 @@ def is_flagged(entity: _odm.model.Entity, author: _auth.model.AbstractUser, flag
     if flag_type not in _flag_types:
         raise RuntimeError("Flag type '{}' is not defined".format(flag_type))
 
-    if author.is_anonymous:
-        return False
-
     f = _odm.find('flag').eq('entity', entity).eq('author', author.uid).eq('type', flag_type)
 
     return bool(f.count())
 
 
-def flag(entity: _odm.model.Entity, author: _auth.model.AbstractUser, flag_type: str = 'like',
-         score: float = 1.0) -> int:
-    """Flag the entity.
+def create(entity: _odm.model.Entity, author: _auth.model.AbstractUser, flag_type: str = 'like',
+           score: float = 1.0) -> int:
+    """Create a flag.
     """
-    if author.is_anonymous:
-        raise RuntimeError("Flag's author cannot be anonymous")
-
     if is_flagged(entity, author):
-        return
+        count(entity, flag_type)
 
     f_info = _flag_types[flag_type]
 
@@ -128,26 +128,7 @@ def flag(entity: _odm.model.Entity, author: _auth.model.AbstractUser, flag_type:
     e.f_set('entity', entity).f_set('author', author.uid).f_set('type', flag_type).f_set('score', score)
     e.save()
 
-    _events.fire('flag.flag', entity=entity, user=author, flag_type=flag_type, score=score)
-
-    return count(entity, flag_type)
-
-
-def unflag(entity: _odm.model.Entity, author: _auth.model.AbstractUser, flag_type: str = 'like') -> int:
-    """Remove flag.
-    """
-    if author.is_anonymous:
-        raise RuntimeError("Flag's author cannot be anonymous")
-
-    if not is_flagged(entity, author):
-        return
-
-    f = _odm.find('flag').eq('entity', entity).eq('author', author.uid).eq('type', flag_type)
-    fl = f.first()
-    with fl:
-        fl.delete()
-
-    _events.fire('flag.unflag', entity=entity, user=author, flag_type=flag_type)
+    _events.fire('flag.create', entity=entity, user=author, flag_type=flag_type, score=score)
 
     return count(entity, flag_type)
 
@@ -156,16 +137,29 @@ def toggle(entity: _odm.model.Entity, author: _auth.model.AbstractUser, flag_typ
            score: float = 1.0) -> int:
     """Toggle flag.
     """
-    if author.is_anonymous:
-        raise RuntimeError("Flag's author cannot be anonymous")
-
     if is_flagged(entity, author, flag_type):
-        return unflag(entity, author, flag_type)
+        return delete(entity, author, flag_type)
     else:
-        return flag(entity, author, flag_type, score)
+        return create(entity, author, flag_type, score)
 
 
-def delete(entity: _odm.model.Entity) -> int:
+def delete(entity: _odm.model.Entity, author: _auth.model.AbstractUser, flag_type: str = 'like') -> int:
+    """Remove flag.
+    """
+    if not is_flagged(entity, author):
+        return count(entity, flag_type)
+
+    f = _odm.find('flag').eq('entity', entity).eq('author', author.uid).eq('type', flag_type)
+    fl = f.first()
+    with fl:
+        fl.delete()
+
+    _events.fire('flag.delete', entity=entity, user=author, flag_type=flag_type)
+
+    return count(entity, flag_type)
+
+
+def delete_all(entity: _odm.model.Entity) -> int:
     """Delete all flags for particular entity.
     """
     r = 0

@@ -14,12 +14,12 @@ def setup():
     _auth.switch_user_to_system()
 
     # Allow ordinary users to create, modify and delete images
-    user_role = _auth.get_role('user')
-    user_role.permissions = list(user_role.permissions) + [
-        'pytsite.odm_auth.create.flag',
-        'pytsite.odm_auth.delete_own.flag',
-    ]
-    user_role.save()
+    for role in _auth.get_roles():
+        role.permissions = list(role.permissions) + [
+            'pytsite.odm_auth.create.flag',
+            'pytsite.odm_auth.delete_own.flag',
+        ]
+        role.save()
 
     _auth.restore_user()
 
@@ -28,4 +28,4 @@ def odm_entity_delete(entity: _odm.model.Entity):
     """'pytsite.odm.entity.delete' event handler.
     """
     # Delete all related flags on entity deletion.
-    _api.delete(entity)
+    _api.delete_all(entity)
