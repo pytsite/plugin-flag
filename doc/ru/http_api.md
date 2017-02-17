@@ -33,13 +33,48 @@ http://test.com/api/1/flag/like/article/57a304e2523af552d17a4dfb
 ```
 
 Ответ:
+
 ```
 {
-    "count": 123,
-    "status": true
+    "count": 123
 }
 ```
 
+
+## GET flag/:flag_type/:model/:uid
+
+Получение текущего состояния флага.
+
+
+### Аргументы
+
+- `flag_type`. Тип флага.
+- `model`. Модель сущности.
+- `uid`. UID сущности.
+
+
+### Формат ответа
+
+Объект.
+
+- **bool** `status`. Состояние флага: `true` -- установлен, `false` -- снят.
+
+
+### Примеры
+
+```
+curl -X GET \
+-H 'PytSite-Auth: 77aaea01a5e58ac3a7d114f418231fa6' \
+http://test.com/api/1/flag/status/like/article/57a304e2523af552d17a4dfb
+```
+
+
+Ответ:
+```
+{
+    "status": true
+}
+```
 
 ## PATCH flag/:flag_type/:model/:uid
 
@@ -151,41 +186,5 @@ http://test.com/api/1/flag/count/like/article/57a304e2523af552d17a4dfb
 ```
 {
     "count": 123
-}
-```
-
-
-## GET flag/status/:flag_type/:model/:uid
-
-Получение текущего состояния флага.
-
-
-### Аргументы
-
-- `flag_type`. Тип флага.
-- `model`. Модель сущности.
-- `uid`. UID сущности.
-
-
-### Формат ответа
-
-Объект.
-
-- **bool** `status`. Состояние флага: `true` -- установлен, `false` -- снят.
-
-
-### Примеры
-
-```
-curl -X GET \
--H 'PytSite-Auth: 77aaea01a5e58ac3a7d114f418231fa6' \
-http://test.com/api/1/flag/status/like/article/57a304e2523af552d17a4dfb
-```
-
-
-Ответ:
-```
-{
-    "status": true
 }
 ```

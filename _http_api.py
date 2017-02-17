@@ -23,6 +23,15 @@ def post(inp: dict, flag_type: str, model: str, uid: str) -> dict:
         raise _http.error.Forbidden(str(e))
 
 
+def get(inp: dict, flag_type: str, model: str, uid: str) -> dict:
+    """Get flag's status.
+    """
+    try:
+        return {'status': _api.is_flagged(_odm.dispense(model, uid), _auth.get_current_user(), flag_type)}
+    except _odm.error.EntityNotFound:
+        return {'status': False}
+
+
 def patch(inp: dict, flag_type: str, model: str, uid: str) -> dict:
     """Toggle a flag.
     """
@@ -41,15 +50,6 @@ def patch(inp: dict, flag_type: str, model: str, uid: str) -> dict:
 
     except _errors.ForbidOperation as e:
         raise _http.error.Forbidden(str(e))
-
-
-def get(inp: dict, flag_type: str, model: str, uid: str) -> dict:
-    """Get flag's status.
-    """
-    try:
-        return {'status': _api.is_flagged(_odm.dispense(model, uid), _auth.get_current_user(), flag_type)}
-    except _odm.error.EntityNotFound:
-        return {'status': False}
 
 
 def delete(inp: dict, flag_type: str, model: str, uid: str) -> dict:

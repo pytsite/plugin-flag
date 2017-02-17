@@ -26,8 +26,8 @@ def _init():
 
     # HTTP API handlers
     http_api.handle('POST', 'flag/<flag_type>/<model>/<uid>', _http_api.post, 'flag@post')
-    http_api.handle('PATCH', 'flag/<flag_type>/<model>/<uid>', _http_api.patch, 'flag@patch')
     http_api.handle('GET', 'flag/<flag_type>/<model>/<uid>', _http_api.get, 'flag@get')
+    http_api.handle('PATCH', 'flag/<flag_type>/<model>/<uid>', _http_api.patch, 'flag@patch')
     http_api.handle('DELETE', 'flag/<flag_type>/<model>/<uid>', _http_api.delete, 'flag@delete')
     http_api.handle('GET', 'flag/count/<flag_type>/<model>/<uid>', _http_api.get_count, 'flag@get_count')
 
