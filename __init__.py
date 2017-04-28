@@ -16,7 +16,11 @@ def _init():
     # Resources
     lang.register_package(__name__, alias='flag')
     tpl.register_package(__name__, alias='flag')
+
     assetman.register_package(__name__, alias='flag')
+    assetman.js_module('flag-widget-like', __name__ + '@js/flag-widget-like')
+    assetman.t_less(__name__ + '@css/**', 'css')
+    assetman.t_js(__name__ + '@js/**', 'js')
 
     # Permission group
     permissions.define_group('flag', 'flag@flag')
