@@ -14,7 +14,7 @@ class Flag(_odm_auth.model.AuthorizableEntity):
     """
 
     @classmethod
-    def odm_auth_permissions(cls) -> _Tuple[str]:
+    def odm_auth_permissions(cls) -> _Tuple[str, ...]:
         return 'create', 'delete_own'
 
     def _setup_fields(self):
@@ -28,8 +28,7 @@ class Flag(_odm_auth.model.AuthorizableEntity):
     def _setup_indexes(self):
         """Hook.
         """
-        self.define_index([('entity', _odm.I_ASC), ('author', _odm.I_ASC)], unique=True)
-        self.define_index([('entity', _odm.I_ASC), ('type', _odm.I_ASC)])
+        self.define_index([('entity', _odm.I_ASC), ('type', _odm.I_ASC), ('author', _odm.I_ASC)], unique=True)
 
     def _on_f_set(self, field_name: str, value, **kwargs):
         if field_name == 'type' and not _api.is_defined(value):

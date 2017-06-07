@@ -4,8 +4,12 @@
 ## Changelog
 
 
+### 0.4.2 (2017-06-07)
+Fixed ODM indices.
+
+
 ### 0.4.1 (2017-06-07)
-Fixe error in `create()`.
+Fixed error in `create()`.
 
 
 ### 0.4 (2017-04-28)
