@@ -115,7 +115,7 @@ def create(entity: _odm.model.Entity, author: _auth.model.AbstractUser, flag_typ
     """Create a flag.
     """
     if is_flagged(entity, author):
-        count(entity, flag_type)
+        return count(entity, flag_type)
 
     f_info = _flag_types[flag_type]
 
