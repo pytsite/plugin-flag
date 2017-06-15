@@ -11,7 +11,7 @@ __license__ = 'MIT'
 
 def _init():
     from pytsite import assetman, odm, tpl, lang, events, http_api, permissions
-    from . import _model, _eh, _http_api
+    from . import _model, _eh, _http_api_controllers
 
     # Resources
     lang.register_package(__name__, alias='flag')
@@ -29,11 +29,11 @@ def _init():
     odm.register_model('flag', _model.Flag)
 
     # HTTP API handlers
-    http_api.handle('POST', 'flag/<flag_type>/<model>/<uid>', _http_api.post, 'flag@post')
-    http_api.handle('GET', 'flag/<flag_type>/<model>/<uid>', _http_api.get, 'flag@get')
-    http_api.handle('PATCH', 'flag/<flag_type>/<model>/<uid>', _http_api.patch, 'flag@patch')
-    http_api.handle('DELETE', 'flag/<flag_type>/<model>/<uid>', _http_api.delete, 'flag@delete')
-    http_api.handle('GET', 'flag/count/<flag_type>/<model>/<uid>', _http_api.get_count, 'flag@get_count')
+    http_api.handle('POST', 'flag/<flag_type>/<model>/<uid>', _http_api_controllers.Post(), 'flag@post')
+    http_api.handle('GET', 'flag/<flag_type>/<model>/<uid>', _http_api_controllers.Get(), 'flag@get')
+    http_api.handle('PATCH', 'flag/<flag_type>/<model>/<uid>', _http_api_controllers.Patch(), 'flag@patch')
+    http_api.handle('DELETE', 'flag/<flag_type>/<model>/<uid>', _http_api_controllers.Delete(), 'flag@delete')
+    http_api.handle('GET', 'flag/count/<flag_type>/<model>/<uid>', _http_api_controllers.GetCount(), 'flag@get_count')
 
     # Event listeners
     events.listen('pytsite.setup', _eh.setup)
