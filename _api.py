@@ -150,8 +150,7 @@ def delete(entity: _odm.model.Entity, author: _auth.model.AbstractUser, flag_typ
         return count(entity, flag_type)
 
     f = _odm.find('flag').eq('entity', entity).eq('author', author.uid).eq('type', flag_type)
-    fl = f.first()
-    with fl:
+    with f.first() as fl:
         fl.delete()
 
     _events.fire('flag.delete', entity=entity, user=author, flag_type=flag_type)
