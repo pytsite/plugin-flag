@@ -105,16 +105,14 @@ def is_flagged(entity: _odm.model.Entity, author: _auth.model.AbstractUser, flag
     if flag_type not in _flag_types:
         raise RuntimeError("Flag type '{}' is not defined".format(flag_type))
 
-    f = _odm.find('flag').eq('entity', entity).eq('author', author.uid).eq('type', flag_type)
-
-    return bool(f.count())
+    return bool(_odm.find('flag').eq('entity', entity).eq('author', author).eq('type', flag_type).count())
 
 
 def create(entity: _odm.model.Entity, author: _auth.model.AbstractUser, flag_type: str = 'like',
            score: float = 1.0) -> int:
     """Create a flag.
     """
-    if is_flagged(entity, author):
+    if is_flagged(entity, author, flag_type):
         return count(entity, flag_type)
 
     f_info = _flag_types[flag_type]
@@ -125,7 +123,7 @@ def create(entity: _odm.model.Entity, author: _auth.model.AbstractUser, flag_typ
         score = f_info['max_score']
 
     e = _odm.dispense('flag')
-    e.f_set('entity', entity).f_set('author', author.uid).f_set('type', flag_type).f_set('score', score)
+    e.f_set('entity', entity).f_set('author', author).f_set('type', flag_type).f_set('score', score)
     e.save()
 
     _events.fire('flag.create', entity=entity, user=author, flag_type=flag_type, score=score)
@@ -146,10 +144,10 @@ def toggle(entity: _odm.model.Entity, author: _auth.model.AbstractUser, flag_typ
 def delete(entity: _odm.model.Entity, author: _auth.model.AbstractUser, flag_type: str = 'like') -> int:
     """Remove flag.
     """
-    if not is_flagged(entity, author):
+    if not is_flagged(entity, author, flag_type):
         return count(entity, flag_type)
 
-    f = _odm.find('flag').eq('entity', entity).eq('author', author.uid).eq('type', flag_type)
+    f = _odm.find('flag').eq('entity', entity).eq('author', author).eq('type', flag_type)
     with f.first() as fl:
         fl.delete()
 

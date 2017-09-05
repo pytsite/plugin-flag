@@ -19,9 +19,7 @@ class Post(_routing.Controller):
         score = float(self.arg('score', 1.0))
 
         try:
-            c = _api.create(_odm.dispense(model, uid), _auth.get_current_user(), flag_type, score)
-
-            return {'count': c}
+            return {'count': _api.create(_odm.dispense(model, uid), _auth.get_current_user(), flag_type, score)}
 
         except _odm.error.EntityNotFound:
             raise self.not_found("Entity '{}:{}' is not found".format(model, uid))
@@ -62,7 +60,7 @@ class Patch(_routing.Controller):
 
             return {
                 'count': count,
-                'status': _api.is_flagged(entity, author),
+                'status': _api.is_flagged(entity, author, flag_type),
             }
 
         except _odm.error.EntityNotFound:

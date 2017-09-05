@@ -1,6 +1,6 @@
 {
-  "name": "plugins.flag",
-  "version": "0.4.4",
+  "name": "flag",
+  "version": "0.4.5",
   "description": {
     "en": "Flag",
     "ru": "Flag",
