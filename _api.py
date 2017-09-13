@@ -147,9 +147,11 @@ def delete(entity: _odm.model.Entity, author: _auth.model.AbstractUser, flag_typ
     if not is_flagged(entity, author, flag_type):
         return count(entity, flag_type)
 
-    f = _odm.find('flag').eq('entity', entity).eq('author', author).eq('type', flag_type)
-    with f.first() as fl:
-        fl.delete()
+    try:
+        _odm.find('flag').eq('entity', entity).eq('author', author).eq('type', flag_type).first().delete()
+    except _odm.error.EntityDeleted:
+        # Entity was deleted by another instance
+        pass
 
     _events.fire('flag.delete', entity=entity, user=author, flag_type=flag_type)
 
@@ -161,8 +163,12 @@ def delete_all(entity: _odm.model.Entity) -> int:
     """
     r = 0
     for flag_entity in _odm.find('flag').eq('entity', entity).get():
-        with flag_entity:
+        try:
             flag_entity.delete()
+        except _odm.error.EntityDeleted:
+            # Entity was deleted by another instance
+            pass
+
         r += 1
 
     return r
