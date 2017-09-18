@@ -4,6 +4,10 @@
 ## Changelog
 
 
+### 1.1  (2017-09-18)
+Added new HTTP API endpoint: `get/entities`.
+
+
 ### 1.0 (2017-09-13)
 Updated to support latest PytSite version 5.0.
 
