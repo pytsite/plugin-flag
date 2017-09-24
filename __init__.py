@@ -30,8 +30,6 @@ def _init():
 
     # HTTP API handlers
     http_api.handle('GET', 'flag/count/<flag_type>/<model>/<uid>', _http_api_controllers.GetCount(), 'flag@get_count')
-    http_api.handle('GET', 'flag/entities/<flag_type>/<model>', _http_api_controllers.GetEntities(),
-                    'flag@get_entities')
     http_api.handle('POST', 'flag/<flag_type>/<model>/<uid>', _http_api_controllers.Post(), 'flag@post')
     http_api.handle('GET', 'flag/<flag_type>/<model>/<uid>', _http_api_controllers.Get(), 'flag@get')
     http_api.handle('PATCH', 'flag/<flag_type>/<model>/<uid>', _http_api_controllers.Patch(), 'flag@patch')

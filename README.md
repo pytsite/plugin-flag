@@ -4,6 +4,10 @@
 ## Changelog
 
 
+### 1.2.1 (2017-09-24)
+Init fixed.
+
+
 ### 1.2 (2017-09-24)
 - API function `find_entities()` renamed to `find()`.
 - Removed HTTP API endpoint: `get/entities`.
