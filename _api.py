@@ -30,8 +30,8 @@ def is_defined(flag_type: str) -> bool:
     return flag_type in _flag_types
 
 
-def find_entities(flag_type: str = 'like', author: _auth.model.AbstractUser = None) -> _odm.Finder:
-    """Find flagged entities.
+def find(flag_type: str = 'like', author: _auth.model.AbstractUser = None) -> _odm.Finder:
+    """Create ODM finder to search for flags
     """
     if flag_type not in _flag_types:
         raise RuntimeError("Flag type '{}' is not defined".format(flag_type))

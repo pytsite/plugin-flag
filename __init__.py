@@ -2,7 +2,7 @@
 """
 # Public API
 from . import _widget as widget
-from ._api import define, create, average, count, delete_all, is_flagged, total, toggle, delete
+from ._api import define, create, average, count, delete_all, is_flagged, total, toggle, delete, is_defined, find
 
 __author__ = 'Alexander Shepetko'
 __email__ = 'a@shepetko.com'

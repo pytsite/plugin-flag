@@ -1,6 +1,6 @@
 """Pytsite Flag Plugin HTTP API
 """
-from pytsite import auth as _auth, odm as _odm, routing as _routing, errors as _errors, formatters as _formatters
+from pytsite import auth as _auth, odm as _odm, routing as _routing, errors as _errors
 from . import _api
 
 __author__ = 'Alexander Shepetko'
@@ -102,23 +102,3 @@ class GetCount(_routing.Controller):
             return {'count': _api.count(_odm.dispense(model, uid), flag_type)}
         except _odm.error.EntityNotFound:
             return {'count': 0}
-
-
-class GetEntities(_routing.Controller):
-    """Get entities flagged by current user
-    """
-
-    def __init__(self):
-        super().__init__()
-
-        self.args.add_formatter('count', _formatters.PositiveInt(100))
-
-    def exec(self) -> list:
-        user = _auth.get_current_user()
-
-        if user.is_anonymous:
-            raise self.forbidden()
-
-        f = _odm.find(self.arg('model')).eq('author', user).skip(self.arg('skip', 0))
-
-        return [e.as_jsonable() for e in f.get(self.arg('count', 100))]
