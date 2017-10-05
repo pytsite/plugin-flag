@@ -1,4 +1,4 @@
-"""Flag Package Widgets.
+"""PytSite Flag Plugin Widgets
 """
 from pytsite import auth as _auth, widget as _widget, html as _html, tpl as _tpl, odm as _odm
 from . import _api

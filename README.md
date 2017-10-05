@@ -4,6 +4,10 @@
 ## Changelog
 
 
+### 1.2.2 (2017-10-05)
+`model.Flag.author` property fixed.
+
+
 ### 1.2.1 (2017-09-24)
 Init fixed.
 

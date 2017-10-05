@@ -1,4 +1,4 @@
-"""Pytsite Flag Plugin HTTP API
+"""Pytsite Flag Plugin HTTP API Controllers
 """
 from pytsite import auth as _auth, odm as _odm, routing as _routing, errors as _errors
 from . import _api

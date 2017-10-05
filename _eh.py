@@ -1,4 +1,4 @@
-"""Flag Package Event Handlers.
+"""PytSite Flag Plugin Event Handlers
 """
 from pytsite import odm as _odm, auth as _auth
 from . import _api

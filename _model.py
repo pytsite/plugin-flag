@@ -1,4 +1,4 @@
-"""Flag Package Models.
+"""PytSite Flag Plugin Models
 """
 from typing import Tuple as _Tuple
 from decimal import Decimal as _Decimal
@@ -35,7 +35,7 @@ class Flag(_odm_auth.model.AuthorizableEntity):
         return self.f_get('entity')
 
     @property
-    def entity(self) -> _auth.model.AbstractUser:
+    def author(self) -> _auth.model.AbstractUser:
         return self.f_get('author')
 
     @property
