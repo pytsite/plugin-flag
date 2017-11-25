@@ -1,4 +1,4 @@
-define(['pytsite-http-api', 'pytsite-lang', 'assetman'], function (httpApi, lang, assetman) {
+define(['http-api', 'lang', 'assetman'], function (httpApi, lang, assetman) {
     return function (widget) {
         widget.em.find('a').click(function (e) {
             e.preventDefault();

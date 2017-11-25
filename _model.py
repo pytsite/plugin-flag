@@ -2,7 +2,7 @@
 """
 from typing import Tuple as _Tuple
 from decimal import Decimal as _Decimal
-from pytsite import odm as _odm, auth_storage_odm as _auth_storage_odm, odm_auth as _odm_auth, auth as _auth
+from plugins import auth as _auth, odm as _odm, auth_storage_odm as _auth_storage_odm, odm_auth as _odm_auth
 from . import _api
 
 __author__ = 'Alexander Shepetko'

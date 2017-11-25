@@ -10,14 +10,15 @@ __license__ = 'MIT'
 
 
 def _init():
-    from pytsite import assetman, odm, tpl, lang, events, http_api, permissions
+    from pytsite import tpl, lang, events
+    from plugins import permissions, odm, assetman, http_api
     from . import _model, _eh, _http_api_controllers
 
     # Resources
-    lang.register_package(__name__, alias='flag')
-    tpl.register_package(__name__, alias='flag')
+    lang.register_package(__name__)
+    tpl.register_package(__name__)
 
-    assetman.register_package(__name__, alias='flag')
+    assetman.register_package(__name__)
     assetman.js_module('flag-widget-like', __name__ + '@js/flag-widget-like')
     assetman.t_less(__name__ + '@**')
     assetman.t_js(__name__ + '@**')
@@ -37,7 +38,7 @@ def _init():
 
     # Event listeners
     events.listen('pytsite.setup', _eh.setup)
-    events.listen('pytsite.odm.entity.delete', _eh.odm_entity_delete)
+    events.listen('odm.entity.delete', _eh.odm_entity_delete)
 
     # Define default flag types
     define('like')

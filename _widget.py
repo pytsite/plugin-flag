@@ -1,6 +1,7 @@
 """PytSite Flag Plugin Widgets
 """
-from pytsite import auth as _auth, widget as _widget, html as _html, tpl as _tpl, odm as _odm
+from pytsite import html as _html, tpl as _tpl
+from plugins import widget as _widget, auth as _auth, odm as _odm
 from . import _api
 
 __author__ = 'Alexander Shepetko'

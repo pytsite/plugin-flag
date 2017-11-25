@@ -1,6 +1,7 @@
 """PytSite Flag Plugin API
 """
-from pytsite import odm as _odm, auth as _auth, cache as _cache, events as _events
+from pytsite import cache as _cache, events as _events
+from plugins import auth as _auth, odm as _odm
 
 __author__ = 'Alexander Shepetko'
 __email__ = 'a@shepetko.com'
