@@ -30,11 +30,11 @@ def _init():
     odm.register_model('flag', _model.Flag)
 
     # HTTP API handlers
-    http_api.handle('GET', 'flag/count/<flag_type>/<model>/<uid>', _http_api_controllers.GetCount(), 'flag@get_count')
-    http_api.handle('POST', 'flag/<flag_type>/<model>/<uid>', _http_api_controllers.Post(), 'flag@post')
-    http_api.handle('GET', 'flag/<flag_type>/<model>/<uid>', _http_api_controllers.Get(), 'flag@get')
-    http_api.handle('PATCH', 'flag/<flag_type>/<model>/<uid>', _http_api_controllers.Patch(), 'flag@patch')
-    http_api.handle('DELETE', 'flag/<flag_type>/<model>/<uid>', _http_api_controllers.Delete(), 'flag@delete')
+    http_api.handle('GET', 'flag/count/<flag_type>/<model>/<uid>', _http_api_controllers.GetCount, 'flag@get_count')
+    http_api.handle('POST', 'flag/<flag_type>/<model>/<uid>', _http_api_controllers.Post, 'flag@post')
+    http_api.handle('GET', 'flag/<flag_type>/<model>/<uid>', _http_api_controllers.Get, 'flag@get')
+    http_api.handle('PATCH', 'flag/<flag_type>/<model>/<uid>', _http_api_controllers.Patch, 'flag@patch')
+    http_api.handle('DELETE', 'flag/<flag_type>/<model>/<uid>', _http_api_controllers.Delete, 'flag@delete')
 
     # Event listeners
     events.listen('pytsite.setup', _eh.setup)
