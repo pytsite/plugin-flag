@@ -10,7 +10,7 @@ __email__ = 'a@shepetko.com'
 __license__ = 'MIT'
 
 
-class Flag(_odm_auth.model.AuthorizableEntity):
+class Flag(_odm_auth.model.OwnedEntity):
     """Flag ODM Model.
     """
 

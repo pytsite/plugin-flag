@@ -127,7 +127,7 @@ def create(entity: _odm.model.Entity, author: _auth.model.AbstractUser, flag_typ
     e.f_set('entity', entity).f_set('author', author).f_set('type', flag_type).f_set('score', score)
     e.save()
 
-    _events.fire('flag.create', entity=entity, user=author, flag_type=flag_type, score=score)
+    _events.fire('flag@create', entity=entity, user=author, flag_type=flag_type, score=score)
 
     return count(entity, flag_type)
 
@@ -154,7 +154,7 @@ def delete(entity: _odm.model.Entity, author: _auth.model.AbstractUser, flag_typ
         # Entity was deleted by another instance
         pass
 
-    _events.fire('flag.delete', entity=entity, user=author, flag_type=flag_type)
+    _events.fire('flag@delete', entity=entity, user=author, flag_type=flag_type)
 
     return count(entity, flag_type)
 
