@@ -1,13 +1,13 @@
 """PytSite Flag Plugin Models
 """
+__author__ = 'Alexander Shepetko'
+__email__ = 'a@shepetko.com'
+__license__ = 'MIT'
+
 from typing import Tuple as _Tuple
 from decimal import Decimal as _Decimal
 from plugins import auth as _auth, odm as _odm, auth_storage_odm as _auth_storage_odm, odm_auth as _odm_auth
 from . import _api
-
-__author__ = 'Alexander Shepetko'
-__email__ = 'a@shepetko.com'
-__license__ = 'MIT'
 
 
 class Flag(_odm_auth.model.OwnedEntity):

@@ -4,6 +4,11 @@
 ## Changelog
 
 
+### 2.2.3 (2018-01-08)
+
+`model` module exposed to public API.
+
+
 ### 2.2.2 (2017-12-21)
 
 Init code refactored.

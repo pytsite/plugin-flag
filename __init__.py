@@ -8,7 +8,7 @@ from pytsite import plugman as _plugman
 
 if _plugman.is_installed(__name__):
     # Public API
-    from . import _widget as widget
+    from . import _widget as widget, _model as model
     from ._api import define, create, average, count, delete_all, is_flagged, total, toggle, delete, is_defined, find
 
 
