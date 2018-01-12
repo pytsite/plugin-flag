@@ -109,10 +109,16 @@ def is_flagged(entity: _odm.model.Entity, author: _auth.model.AbstractUser, flag
     return bool(_odm.find('flag').eq('entity', entity).eq('author', author).eq('type', flag_type).count())
 
 
-def create(entity: _odm.model.Entity, author: _auth.model.AbstractUser, flag_type: str = 'like',
+def create(entity: _odm.model.Entity, author: _auth.model.AbstractUser = None, flag_type: str = 'like',
            score: float = 1.0) -> int:
     """Create a flag.
     """
+    if not author:
+        author = _auth.get_current_user()
+
+    if author.is_anonymous or author.is_system:
+        raise RuntimeError('Author of a flag should not be anonymous or system user')
+
     if is_flagged(entity, author, flag_type):
         return count(entity, flag_type)
 
@@ -123,9 +129,12 @@ def create(entity: _odm.model.Entity, author: _auth.model.AbstractUser, flag_typ
     elif score > f_info['max_score']:
         score = f_info['max_score']
 
-    e = _odm.dispense('flag')
-    e.f_set('entity', entity).f_set('author', author).f_set('type', flag_type).f_set('score', score)
-    e.save()
+    _odm.dispense('flag').f_set_multiple({
+        'entity': entity,
+        'author': author,
+        'type': flag_type,
+        'score': score,
+    }).save()
 
     _events.fire('flag@create', entity=entity, user=author, flag_type=flag_type, score=score)
 

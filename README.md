@@ -4,6 +4,11 @@
 ## Changelog
 
 
+### 2.3 (2018-01-12)
+
+Support for `odm-1.4`.
+
+
 ### 2.2.3 (2018-01-08)
 
 `model` module exposed to public API.

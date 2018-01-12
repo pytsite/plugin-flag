@@ -4,7 +4,7 @@ __author__ = 'Alexander Shepetko'
 __email__ = 'a@shepetko.com'
 __license__ = 'MIT'
 
-from pytsite import plugman as _plugman
+from pytsite import plugman as _plugman, semver as _semver
 
 if _plugman.is_installed(__name__):
     # Public API
@@ -76,3 +76,14 @@ def plugin_load_uwsgi():
     http_api.handle('GET', 'flag/<flag_type>/<model>/<uid>', _http_api_controllers.Get, 'flag@get')
     http_api.handle('PATCH', 'flag/<flag_type>/<model>/<uid>', _http_api_controllers.Patch, 'flag@patch')
     http_api.handle('DELETE', 'flag/<flag_type>/<model>/<uid>', _http_api_controllers.Delete, 'flag@delete')
+
+
+def plugin_update(v_from: _semver.Version):
+    if v_from < _semver.Version('2.3'):
+        from plugins import odm
+
+        # Type of the field 'entity' was changed from Ref to ManualRef,
+        # so it's necessary to re-save all the flags to update this field
+        odm.clear_finder_cache('flag')
+        for e in odm.find('flag').get():
+            e.save(force=True, pre_hooks=False, after_hooks=False, update_timestamp=False)
