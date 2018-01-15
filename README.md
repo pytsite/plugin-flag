@@ -4,6 +4,11 @@
 ## Changelog
 
 
+### 2.3.1 (2018-01-15)
+
+Fixed update code.
+
+
 ### 2.3 (2018-01-12)
 
 Support for `odm-1.4`.

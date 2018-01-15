@@ -80,10 +80,15 @@ def plugin_load_uwsgi():
 
 def plugin_update(v_from: _semver.Version):
     if v_from < _semver.Version('2.3'):
-        from plugins import odm
+        from pytsite import on_app_load
 
-        # Type of the field 'entity' was changed from Ref to ManualRef,
-        # so it's necessary to re-save all the flags to update this field
-        odm.clear_finder_cache('flag')
-        for e in odm.find('flag').get():
-            e.save(force=True, pre_hooks=False, after_hooks=False, update_timestamp=False)
+        def update_from_2_3():
+            from plugins import odm
+
+            # Type of the field 'entity' was changed from Ref to ManualRef,
+            # so it's necessary to re-save all the flags to update this field
+            odm.clear_finder_cache('flag')
+            for e in odm.find('flag').get():
+                e.save(force=True, pre_hooks=False, after_hooks=False, update_timestamp=False)
+
+        on_app_load(update_from_2_3)

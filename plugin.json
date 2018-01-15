@@ -1,6 +1,6 @@
 {
   "name": "flag",
-  "version": "2.3",
+  "version": "2.3.1",
   "description": {
     "en": "Flag",
     "ru": "Flag",
@@ -13,7 +13,7 @@
     "url": "https://shepetko.com"
   },
   "requires": {
-    "pytsite": ">=7.4",
+    "pytsite": ">=7.5.9",
     "plugins": [
       "assetman",
       "auth",
