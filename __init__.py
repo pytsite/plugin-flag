@@ -78,17 +78,12 @@ def plugin_load_uwsgi():
     http_api.handle('DELETE', 'flag/<flag_type>/<model>/<uid>', _http_api_controllers.Delete, 'flag@delete')
 
 
-def plugin_update(v_from: _semver.Version):
+def plugin_update_2(v_from: _semver.Version):
     if v_from < _semver.Version('2.3'):
-        from pytsite import on_app_load
+        from plugins import odm
 
-        def update_from_2_3():
-            from plugins import odm
-
-            # Type of the field 'entity' was changed from Ref to ManualRef,
-            # so it's necessary to re-save all the flags to update this field
-            odm.clear_finder_cache('flag')
-            for e in odm.find('flag').get():
-                e.save(force=True, pre_hooks=False, after_hooks=False, update_timestamp=False)
-
-        on_app_load(update_from_2_3)
+        # Type of the field 'entity' was changed from Ref to ManualRef,
+        # so it's necessary to re-save all the flags to update this field
+        odm.clear_finder_cache('flag')
+        for e in odm.find('flag').get():
+            e.save(force=True, pre_hooks=False, after_hooks=False, update_timestamp=False)
