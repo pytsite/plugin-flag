@@ -1,11 +1,11 @@
 """PytSite Flag Plugin Event Handlers
 """
-from plugins import odm as _odm
-from . import _api
-
 __author__ = 'Alexander Shepetko'
 __email__ = 'a@shepetko.com'
 __license__ = 'MIT'
+
+from plugins import odm as _odm
+from . import _api
 
 
 def odm_entity_delete(entity: _odm.model.Entity):

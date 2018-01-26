@@ -1,12 +1,12 @@
 """Pytsite Flag Plugin HTTP API Controllers
 """
-from pytsite import routing as _routing, errors as _errors
-from plugins import auth as _auth, odm as _odm
-from . import _api
-
 __author__ = 'Alexander Shepetko'
 __email__ = 'a@shepetko.com'
 __license__ = 'MIT'
+
+from pytsite import routing as _routing, errors as _errors
+from plugins import auth as _auth, odm as _odm
+from . import _api
 
 
 class Post(_routing.Controller):

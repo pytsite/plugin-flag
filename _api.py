@@ -1,11 +1,11 @@
 """PytSite Flag Plugin API
 """
-from pytsite import cache as _cache, events as _events
-from plugins import auth as _auth, odm as _odm
-
 __author__ = 'Alexander Shepetko'
 __email__ = 'a@shepetko.com'
 __license__ = 'MIT'
+
+from pytsite import cache as _cache, events as _events
+from plugins import auth as _auth, odm as _odm
 
 _CACHE_TTL = 300  # 5 min
 _flag_types = {}

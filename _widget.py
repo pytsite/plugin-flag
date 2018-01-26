@@ -1,17 +1,18 @@
 """PytSite Flag Plugin Widgets
 """
-from pytsite import html as _html, tpl as _tpl
-from plugins import widget as _widget, auth as _auth, odm as _odm
-from . import _api
-
 __author__ = 'Alexander Shepetko'
 __email__ = 'a@shepetko.com'
 __license__ = 'MIT'
+
+from pytsite import html as _html, tpl as _tpl
+from plugins import widget as _widget, auth as _auth, odm as _odm
+from . import _api
 
 
 class Like(_widget.Abstract):
     """Flag Widget.
     """
+
     def __init__(self, uid: str, **kwargs):
         """Init.
         :param entity: _odm.model.Entity

@@ -4,53 +4,27 @@ __author__ = 'Alexander Shepetko'
 __email__ = 'a@shepetko.com'
 __license__ = 'MIT'
 
-from pytsite import plugman as _plugman, semver as _semver
+from pytsite import semver as _semver
 
-if _plugman.is_installed(__name__):
-    # Public API
-    from . import _widget as widget, _model as model
-    from ._api import define, create, average, count, delete_all, is_flagged, total, toggle, delete, is_defined, find
-
-
-def _register_assetman_resources():
-    from plugins import assetman
-
-    if not assetman.is_package_registered(__name__):
-        assetman.register_package(__name__)
-        assetman.js_module('flag-widget-like', __name__ + '@js/flag-widget-like')
-        assetman.t_less(__name__)
-        assetman.t_js(__name__)
-
-    return assetman
-
-
-def plugin_install():
-    from plugins import auth
-
-    # Allow ordinary users to create, modify and delete images
-    auth.switch_user_to_system()
-    for role in auth.get_roles():
-        role.permissions = list(role.permissions) + [
-            'odm_auth.create.flag',
-            'odm_auth.delete_own.flag',
-        ]
-        role.save()
-    auth.restore_user()
-
-    assetman = _register_assetman_resources()
-    assetman.build(__name__)
-    assetman.build_translations()
+# Public API
+from . import _widget as widget, _model as model
+from ._api import define, create, average, count, delete_all, is_flagged, total, toggle, delete, is_defined, find
 
 
 def plugin_load():
     from pytsite import tpl, lang, events
-    from plugins import permissions, odm
+    from plugins import permissions, odm, assetman
     from . import _api, _model, _eh, _http_api_controllers
 
     # Resources
     lang.register_package(__name__)
     tpl.register_package(__name__)
-    _register_assetman_resources()
+    assetman.register_package(__name__)
+
+    # Assets
+    assetman.js_module('flag-widget-like', __name__ + '@js/flag-widget-like')
+    assetman.t_less(__name__)
+    assetman.t_js(__name__)
 
     # Permission group
     permissions.define_group('flag', 'flag@flag')
@@ -64,6 +38,23 @@ def plugin_load():
     # Define default flag types
     _api.define('like')
     _api.define('bookmark')
+
+
+def plugin_install():
+    from plugins import auth, assetman
+
+    # Allow ordinary users to create, modify and delete images
+    auth.switch_user_to_system()
+    for role in auth.get_roles():
+        role.permissions = list(role.permissions) + [
+            'odm_auth@create.flag',
+            'odm_auth@delete_own.flag',
+        ]
+        role.save()
+    auth.restore_user()
+
+    assetman.build(__name__)
+    assetman.build_translations()
 
 
 def plugin_load_uwsgi():
