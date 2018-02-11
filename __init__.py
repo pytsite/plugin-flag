@@ -69,7 +69,7 @@ def plugin_load_uwsgi():
     http_api.handle('DELETE', 'flag/<flag_type>/<model>/<uid>', _http_api_controllers.Delete, 'flag@delete')
 
 
-def plugin_update_2(v_from: _semver.Version):
+def plugin_update(v_from: _semver.Version):
     if v_from < _semver.Version('2.3'):
         from plugins import odm
 

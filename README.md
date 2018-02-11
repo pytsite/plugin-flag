@@ -4,6 +4,11 @@
 ## Changelog
 
 
+### 2.3.4 (2018-02-11)
+
+Support for PytSite-7.8.
+
+
 ### 2.3.3 (2018-01-26)
 
 Init code refactored.
