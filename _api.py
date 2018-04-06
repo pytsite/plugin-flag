@@ -5,7 +5,7 @@ __email__ = 'a@shepetko.com'
 __license__ = 'MIT'
 
 from pytsite import cache as _cache, events as _events
-from plugins import auth as _auth, odm as _odm
+from plugins import auth as _auth, odm as _odm, query as _query
 
 _CACHE_TTL = 300  # 5 min
 _flag_types = {}
@@ -64,7 +64,9 @@ def total(entity: _odm.model.Entity, flag_type: str = 'like') -> float:
     if _cache_p.has(c_key):
         return _cache_p.get(c_key)
 
-    ag = _odm.aggregate('flag').match('entity', '=', entity).match('type', '=', flag_type)
+    ag = _odm.aggregate('flag')
+    ag.match(_query.And(_query.Eq('entity', entity)))
+    ag.match(_query.And(_query.Eq('type', flag_type)))
 
     ag.group({
         '_id': None,
@@ -87,7 +89,9 @@ def average(entity: _odm.model.Entity, flag_type: str = 'like') -> float:
     if _cache_p.has(c_key):
         return _cache_p.get(c_key)
 
-    ag = _odm.aggregate('flag').match('entity', '=', entity).match('type', '=', flag_type)
+    ag = _odm.aggregate('flag')
+    ag.match(_query.And(_query.Eq('entity', entity)))
+    ag.match(_query.And(_query.Eq('type', flag_type)))
 
     ag.group({
         '_id': None,

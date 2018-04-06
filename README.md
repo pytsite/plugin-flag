@@ -4,6 +4,11 @@
 ## Changelog
 
 
+### 2.4 (2018-04-06)
+
+Support of `auth-2.0` and `odm-2.0`.
+
+
 ### 2.3.4 (2018-02-11)
 
 Support for PytSite-7.8.

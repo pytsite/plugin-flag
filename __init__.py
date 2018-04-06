@@ -45,7 +45,7 @@ def plugin_install():
 
     # Allow ordinary users to create, modify and delete images
     auth.switch_user_to_system()
-    for role in auth.get_roles():
+    for role in auth.find_roles():
         role.permissions = list(role.permissions) + [
             'odm_auth@create.flag',
             'odm_auth@delete_own.flag',
