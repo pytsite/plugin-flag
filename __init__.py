@@ -44,14 +44,12 @@ def plugin_install():
     from plugins import auth, assetman
 
     # Allow ordinary users to create, modify and delete images
-    auth.switch_user_to_system()
     for role in auth.find_roles():
         role.permissions = list(role.permissions) + [
             'odm_auth@create.flag',
             'odm_auth@delete_own.flag',
         ]
         role.save()
-    auth.restore_user()
 
     assetman.build(__name__)
     assetman.build_translations()
