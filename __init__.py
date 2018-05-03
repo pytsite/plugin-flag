@@ -73,6 +73,6 @@ def plugin_update(v_from: _semver.Version):
 
         # Type of the field 'entity' was changed from Ref to ManualRef,
         # so it's necessary to re-save all the flags to update this field
-        odm.clear_finder_cache('flag')
+        odm.clear_cache('flag')
         for e in odm.find('flag').get():
             e.save(force=True, pre_hooks=False, after_hooks=False, update_timestamp=False)

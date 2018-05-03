@@ -10,7 +10,7 @@ from . import _api
 
 
 class Like(_widget.Abstract):
-    """Flag Widget.
+    """Flag Widget
     """
 
     def __init__(self, uid: str, **kwargs):

@@ -11,7 +11,7 @@ from . import _api
 
 
 class Flag(_odm_auth.model.OwnedEntity):
-    """Flag ODM Model.
+    """Flag ODM Model
     """
 
     @classmethod
