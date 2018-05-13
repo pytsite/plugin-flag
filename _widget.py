@@ -28,7 +28,7 @@ class Like(_widget.Abstract):
             raise ValueError('Entity is not specified.')
 
         self._css += ' widget-flag-like'
-        self._js_module = 'flag-widget-like'
+        self._js_modules.append('flag-widget-like')
         self._data['model'] = self._entity.model
         self._data['uid'] = str(self._entity.id)
 
