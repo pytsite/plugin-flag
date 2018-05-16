@@ -4,6 +4,11 @@
 ## Changelog
 
 
+### 3.0 (2018-05-16)
+
+UI related parts moved to the plugin `flag_ui`.
+
+
 ### 2.7 (2018-05-13)
 
 Support of `widget-2.0`.

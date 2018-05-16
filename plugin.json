@@ -1,6 +1,6 @@
 {
   "name": "flag",
-  "version": "2.7",
+  "version": "3.0",
   "description": {
     "en": "Flag",
     "ru": "Flag",
@@ -15,15 +15,13 @@
   "requires": {
     "pytsite": ">=7.8",
     "plugins": [
-      "assetman",
       "auth>=3.0",
       "auth_storage_odm>=3.0",
       "http_api",
       "odm>=3.0",
       "odm_auth",
       "permissions",
-      "query>=1.0",
-      "widget>=2.0"
+      "query>=1.0"
     ]
   }
 }

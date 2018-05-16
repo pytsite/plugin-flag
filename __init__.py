@@ -7,24 +7,17 @@ __license__ = 'MIT'
 from pytsite import semver as _semver
 
 # Public API
-from . import _widget as widget, _model as model
+from . import _model as model
 from ._api import define, create, average, count, delete_all, is_flagged, total, toggle, delete, is_defined, find
 
 
 def plugin_load():
-    from pytsite import tpl, lang, events
-    from plugins import permissions, odm, assetman
+    from pytsite import lang, events
+    from plugins import permissions, odm
     from . import _api, _model, _eh, _http_api_controllers
 
     # Resources
     lang.register_package(__name__)
-    tpl.register_package(__name__)
-    assetman.register_package(__name__)
-
-    # Assets
-    assetman.js_module('flag-widget-like', __name__ + '@js/flag-widget-like')
-    assetman.t_less(__name__)
-    assetman.t_js(__name__)
 
     # Permission group
     permissions.define_group('flag', 'flag@flag')
