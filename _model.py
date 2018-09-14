@@ -1,6 +1,6 @@
 """PytSite Flag Plugin Models
 """
-__author__ = 'Alexander Shepetko'
+__author__ = 'Oleksandr Shepetko'
 __email__ = 'a@shepetko.com'
 __license__ = 'MIT'
 
@@ -22,7 +22,7 @@ class Flag(_odm_auth.model.OwnedEntity):
         """Hook.
         """
         self.define_field(_odm.field.String('type', default='like'))
-        self.define_field(_odm.field.ManualRef('entity', required=True))
+        self.define_field(_odm.field.Ref('entity', required=True))
         self.define_field(_auth_storage_odm.field.User('author', required=True))
         self.define_field(_odm.field.Decimal('score', default=1.0))
 

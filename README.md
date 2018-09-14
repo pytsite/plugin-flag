@@ -4,6 +4,11 @@
 ## Changelog
 
 
+### 3.1 (2018-09-14)
+
+Support of `odm-4.0`.
+
+
 ### 3.0 (2018-05-16)
 
 UI related parts moved to the plugin `flag_ui`.

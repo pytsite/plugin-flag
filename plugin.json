@@ -1,6 +1,6 @@
 {
   "name": "flag",
-  "version": "3.0",
+  "version": "3.1",
   "description": {
     "en": "Flag",
     "ru": "Flag",
@@ -8,7 +8,7 @@
   },
   "url": "https://github.com/pytsite/plugin-flag",
   "author": {
-    "name": "Alexander Shepetko",
+    "name": "Oleksandr Shepetko",
     "email": "a@shepetko.com",
     "url": "https://shepetko.com"
   },
@@ -18,7 +18,7 @@
       "auth>=3.0",
       "auth_storage_odm>=3.0",
       "http_api",
-      "odm>=3.0",
+      "odm>=4.0",
       "odm_auth",
       "permissions",
       "query>=1.0"
