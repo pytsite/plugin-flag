@@ -1,4 +1,4 @@
-"""PytSite Flag Plugin Models
+"""PytSite Flag Plugin ODM Models
 """
 __author__ = 'Oleksandr Shepetko'
 __email__ = 'a@shepetko.com'
@@ -14,21 +14,9 @@ class Flag(_odm_auth.model.OwnedEntity):
     """Flag ODM Model
     """
 
-    @classmethod
-    def odm_auth_permissions(cls) -> _Tuple[str, ...]:
-        return 'create', 'delete_own'
-
-    def _setup_fields(self):
-        """Hook.
-        """
-        self.define_field(_odm.field.String('type', default='like'))
-        self.define_field(_odm.field.Ref('entity', required=True))
-        self.define_field(_auth_storage_odm.field.User('author', required=True))
-        self.define_field(_odm.field.Decimal('score', default=1.0))
-
     @property
-    def type(self) -> str:
-        return self.f_get('type')
+    def variant(self) -> str:
+        return self.f_get('variant')
 
     @property
     def entity(self) -> _odm.model.Entity:
@@ -42,13 +30,27 @@ class Flag(_odm_auth.model.OwnedEntity):
     def score(self) -> _Decimal:
         return self.f_get('score')
 
+    def _setup_fields(self):
+        """Hook
+        """
+        self.define_field(_odm.field.String('variant', required='True', default='like'))
+        self.define_field(_odm.field.Ref('entity', required=True))
+        self.define_field(_auth_storage_odm.field.User('author', required=True))
+        self.define_field(_odm.field.Decimal('score', default=1.0))
+
     def _setup_indexes(self):
         """Hook.
         """
-        self.define_index([('entity', _odm.I_ASC), ('type', _odm.I_ASC), ('author', _odm.I_ASC)], unique=True)
+        self.define_index([('variant', _odm.I_ASC), ('entity', _odm.I_ASC), ('author', _odm.I_ASC)], unique=True)
 
     def _on_f_set(self, field_name: str, value, **kwargs):
-        if field_name == 'type' and not _api.is_defined(value):
-            raise ValueError("Flag type '{}' is not defined".format(value))
+        """Hook
+        """
+        if field_name == 'variant' and not _api.is_defined(value):
+            raise ValueError("Flag variant '{}' is not defined".format(value))
 
         return super()._on_f_set(field_name, value, **kwargs)
+
+    @classmethod
+    def odm_auth_permissions(cls) -> _Tuple[str, ...]:
+        return 'create', 'delete_own'

@@ -4,40 +4,38 @@ __author__ = 'Oleksandr Shepetko'
 __email__ = 'a@shepetko.com'
 __license__ = 'MIT'
 
-from pytsite import cache as _cache, events as _events
-from plugins import auth as _auth, odm as _odm, query as _query
+from pytsite import events as _events, errors as _errors
+from plugins import auth as _auth, odm as _odm
 
-_CACHE_TTL = 300  # 5 min
-_flag_types = {}
-_cache_p = _cache.create_pool('flag')
+_variants = {}
 
 
-def define(flag_type: str, default: float = 1.0, min_score: float = 1.0, max_score: float = 1.0):
-    """Define a flag type.
+def define(variant: str, default: float = 1.0, min_score: float = 1.0, max_score: float = 1.0):
+    """Define a flag variant.
     """
-    if flag_type in _flag_types:
-        raise RuntimeError("Flag type '{}' is already defined".format(flag_type))
+    if variant in _variants:
+        raise RuntimeError("Flag variant '{}' is already defined".format(variant))
 
-    _flag_types[flag_type] = {
+    _variants[variant] = {
         'default': default,
         'min_score': min_score,
         'max_score': max_score,
     }
 
 
-def is_defined(flag_type: str) -> bool:
-    """Check whether a flag type is defined.
+def is_defined(variant: str) -> bool:
+    """Check whether a flag variant is defined.
     """
-    return flag_type in _flag_types
+    return variant in _variants
 
 
-def find(flag_type: str = 'like', author: _auth.model.AbstractUser = None) -> _odm.Finder:
+def find(variant: str = 'like', author: _auth.model.AbstractUser = None) -> _odm.SingleModelFinder:
     """Create ODM finder to search for flags
     """
-    if flag_type not in _flag_types:
-        raise RuntimeError("Flag type '{}' is not defined".format(flag_type))
+    if variant not in _variants:
+        raise RuntimeError("Flag variant '{}' is not defined".format(variant))
 
-    f = _odm.find('flag').eq('type', flag_type)
+    f = _odm.find('flag').eq('variant', variant)
 
     if author:
         f.eq('author', author)
@@ -45,75 +43,19 @@ def find(flag_type: str = 'like', author: _auth.model.AbstractUser = None) -> _o
     return f
 
 
-def count(entity: _odm.model.Entity, flag_type: str = 'like') -> int:
-    """Get flag count for the entity.
+def count(entity: _odm.model.Entity, variant: str = 'like') -> int:
+    """Get flags count for the entity
     """
-    if flag_type not in _flag_types:
-        raise RuntimeError("Flag type '{}' is not defined".format(flag_type))
-
-    return _odm.find('flag').eq('entity', entity).eq('type', flag_type).count()
+    return find(variant).eq('entity', entity).count()
 
 
-def total(entity: _odm.model.Entity, flag_type: str = 'like') -> float:
-    """Get sum of flag scores for the entity.
-    """
-    if flag_type not in _flag_types:
-        raise RuntimeError("Flag type '{}' is not defined".format(flag_type))
-
-    c_key = 'sum.{}.{}'.format(entity.id, flag_type)
-    if _cache_p.has(c_key):
-        return _cache_p.get(c_key)
-
-    ag = _odm.aggregate('flag')
-    ag.match(_query.And(_query.Eq('entity', entity)))
-    ag.match(_query.And(_query.Eq('type', flag_type)))
-
-    ag.group({
-        '_id': None,
-        'sum': {'$sum': '$score'}
-    })
-
-    r = list(ag.get())
-    v = r[0]['sum'] if r else 0.0
-
-    return _cache_p.put(c_key, v, _CACHE_TTL)
-
-
-def average(entity: _odm.model.Entity, flag_type: str = 'like') -> float:
-    """Get average score for the entity.
-    """
-    if flag_type not in _flag_types:
-        raise RuntimeError("Flag type '{}' is not defined".format(flag_type))
-
-    c_key = 'average.{}.{}'.format(entity.id, flag_type)
-    if _cache_p.has(c_key):
-        return _cache_p.get(c_key)
-
-    ag = _odm.aggregate('flag')
-    ag.match(_query.And(_query.Eq('entity', entity)))
-    ag.match(_query.And(_query.Eq('type', flag_type)))
-
-    ag.group({
-        '_id': None,
-        'avg': {'$avg': '$score'}
-    })
-
-    r = list(ag.get())
-    v = r[0]['avg'] if r else 0.0
-
-    return _cache_p.put(c_key, v, _CACHE_TTL)
-
-
-def is_flagged(entity: _odm.model.Entity, author: _auth.model.AbstractUser, flag_type: str = 'like') -> bool:
+def is_flagged(entity: _odm.model.Entity, author: _auth.model.AbstractUser = None, variant: str = 'like') -> bool:
     """Check if an entity is flagged by a user.
     """
-    if flag_type not in _flag_types:
-        raise RuntimeError("Flag type '{}' is not defined".format(flag_type))
-
-    return bool(_odm.find('flag').eq('entity', entity).eq('author', author).eq('type', flag_type).count())
+    return bool(find(variant).eq('entity', entity).eq('author', author or _auth.get_current_user()).count())
 
 
-def create(entity: _odm.model.Entity, author: _auth.model.AbstractUser = None, flag_type: str = 'like',
+def create(entity: _odm.model.Entity, author: _auth.model.AbstractUser = None, variant: str = 'like',
            score: float = 1.0) -> int:
     """Create a flag.
     """
@@ -121,13 +63,13 @@ def create(entity: _odm.model.Entity, author: _auth.model.AbstractUser = None, f
         author = _auth.get_current_user()
 
     if author.is_anonymous or author.is_system:
-        raise RuntimeError('Author of a flag should not be anonymous or system user')
+        raise _errors.ForbidCreation('Authentication required')
 
-    if is_flagged(entity, author, flag_type):
-        return count(entity, flag_type)
+    if is_flagged(entity, author, variant):
+        return count(entity, variant)
 
-    f_info = _flag_types[flag_type]
-
+    # Check and set score of the flag
+    f_info = _variants[variant]
     if score < f_info['min_score']:
         score = f_info['min_score']
     elif score > f_info['max_score']:
@@ -136,44 +78,44 @@ def create(entity: _odm.model.Entity, author: _auth.model.AbstractUser = None, f
     _odm.dispense('flag').f_set_multiple({
         'entity': entity,
         'author': author,
-        'type': flag_type,
+        'variant': variant,
         'score': score,
     }).save()
 
-    _events.fire('flag@create', entity=entity, user=author, flag_type=flag_type, score=score)
+    _events.fire('flag@create', entity=entity, user=author, variant=variant, score=score)
 
-    return count(entity, flag_type)
+    return count(entity, variant)
 
 
-def toggle(entity: _odm.model.Entity, author: _auth.model.AbstractUser, flag_type: str = 'like',
-           score: float = 1.0) -> int:
-    """Toggle flag.
+def delete(entity: _odm.model.Entity, author: _auth.model.AbstractUser, variant: str = 'like') -> int:
+    """Delete a flag
     """
-    if is_flagged(entity, author, flag_type):
-        return delete(entity, author, flag_type)
-    else:
-        return create(entity, author, flag_type, score)
-
-
-def delete(entity: _odm.model.Entity, author: _auth.model.AbstractUser, flag_type: str = 'like') -> int:
-    """Remove flag.
-    """
-    if not is_flagged(entity, author, flag_type):
-        return count(entity, flag_type)
+    if not is_flagged(entity, author, variant):
+        return count(entity, variant)
 
     try:
-        _odm.find('flag').eq('entity', entity).eq('author', author).eq('type', flag_type).first().delete()
+        find(variant).eq('entity', entity).eq('author', author).first().delete()
     except _odm.error.EntityDeleted:
         # Entity was deleted by another instance
         pass
 
-    _events.fire('flag@delete', entity=entity, user=author, flag_type=flag_type)
+    _events.fire('flag@delete', entity=entity, user=author, variant=variant)
 
-    return count(entity, flag_type)
+    return count(entity, variant)
+
+
+def toggle(entity: _odm.model.Entity, author: _auth.model.AbstractUser, variant: str = 'like',
+           score: float = 1.0) -> int:
+    """Toggle a flag
+    """
+    if is_flagged(entity, author, variant):
+        return delete(entity, author, variant)
+    else:
+        return create(entity, author, variant, score)
 
 
 def delete_all(entity: _odm.model.Entity) -> int:
-    """Delete all flags for particular entity.
+    """Delete all flags for particular entity
     """
     r = 0
     for flag_entity in _odm.find('flag').eq('entity', entity).get():

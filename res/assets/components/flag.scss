@@ -1,0 +1,11 @@
+.widget-flag {
+  i {
+    margin-right: .25em;
+  }
+
+  a, button {
+    &:hover, &:active, &:focus {
+      text-decoration: none;
+    }
+  }
+}
