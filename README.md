@@ -4,6 +4,15 @@
 ## Changelog
 
 
+### 4.1 (2019-02-11)
+
+- Automatic link set added in `widget.Flag`.
+- Support of `title` property added in `widget.Flag`.
+- New widgets added: `Like` and `Bookmark`.
+- `widget.Flag.icon` attribute replaced with `flaggedIcon` and 
+  `unflaggedIcon` attributes.
+
+
 ### 4.0 (2019-02-11)
 
 Fully redesigned.

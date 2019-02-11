@@ -27,7 +27,6 @@ def plugin_load():
 
     # Define default flag variants
     _api.define('like')
-    _api.define('dislike')
     _api.define('bookmark')
 
 

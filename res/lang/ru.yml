@@ -1,3 +1,7 @@
 flag: 'Отметки'
 odm_auth_create_flag: 'Создание отметок'
 odm_auth_delete_own_flag: 'Удаление СВОИХ отметок'
+add_to_liked: 'Нравится'
+remove_from_liked: 'Нравится'
+add_to_bookmarks: 'В избранное'
+remove_from_bookmarks: 'В избранном'
