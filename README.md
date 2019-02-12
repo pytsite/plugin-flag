@@ -4,6 +4,12 @@
 ## Changelog
 
 
+### 4.1.1 (2019-02-12)
+
+- JS dependencies cleaned up.
+- Default CSS setting fixed.
+
+
 ### 4.1 (2019-02-11)
 
 - Automatic link set added in `widget.Flag`.

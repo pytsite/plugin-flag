@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Button} from 'reactstrap';
 import httpApi from '@pytsite/http-api';
 import setupWidget from '@pytsite/widget';
 import ReactDOM from "react-dom";
@@ -62,7 +61,7 @@ export default class Flag extends React.Component {
 
         if (this.props.link) {
             return (
-                <a href={this.props.link} target={this.props.linkTarget} className={`btn btn-link ${className}`.trim()}
+                <a href={this.props.link} target={this.props.linkTarget} className={className}
                    data-toggle={this.props.linkDataToggle} data-target={this.props.linkDataTarget}
                    title={this.props.title}>
                     {icon}
@@ -72,11 +71,11 @@ export default class Flag extends React.Component {
             )
         } else {
             return (
-                <Button onClick={this.onClick} className={className.trim()} color={'link'} title={this.props.title}>
+                <a onClick={this.onClick} className={className} title={this.props.title}>
                     {icon}
                     {caption}
                     {counter && ` ${counter}`}
-                </Button>
+                </a>
             )
         }
     }

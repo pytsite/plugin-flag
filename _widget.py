@@ -14,6 +14,8 @@ class Flag(_widget.Abstract):
     def __init__(self, uid: str, variant: str, entity: _Union[str, _odm.Entity], **kwargs):
         """Init
         """
+        kwargs.setdefault('css', 'btn btn-link')
+
         super().__init__(uid, has_messages=False, **kwargs)
 
         self._variant = variant
