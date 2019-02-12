@@ -4,6 +4,11 @@
 ## Changelog
 
 
+### 4.2.1 (2019-02-12)
+
+`widget.Flag.form_group` set to `False`.
+
+
 ### 4.2 (2019-02-12)
 
 New `widget.Flag.btn_css` attribute added.

@@ -14,7 +14,7 @@ class Flag(_widget.Abstract):
     def __init__(self, uid: str, variant: str, entity: _Union[str, _odm.Entity], **kwargs):
         """Init
         """
-        super().__init__(uid, has_messages=False, **kwargs)
+        super().__init__(uid, has_messages=False, form_group=False, **kwargs)
 
         self._variant = variant
         self._entity = entity
