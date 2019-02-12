@@ -14,8 +14,6 @@ class Flag(_widget.Abstract):
     def __init__(self, uid: str, variant: str, entity: _Union[str, _odm.Entity], **kwargs):
         """Init
         """
-        kwargs.setdefault('css', 'btn btn-link')
-
         super().__init__(uid, has_messages=False, **kwargs)
 
         self._variant = variant
@@ -25,6 +23,7 @@ class Flag(_widget.Abstract):
         self._unflagged_caption = kwargs.get('unflagged_caption')
         self._unflagged_icon = kwargs.get('unflagged_icon')
         self._counter_format = kwargs.get('counter_format', '(#)')
+        self._btn_css = kwargs.get('btn_css', 'btn btn-link')
         self._link = kwargs.get('link', '')
         self._link_target = kwargs.get('link_target', '_self')
         self._link_data_toggle = kwargs.get('link_data_toggle')
@@ -39,7 +38,7 @@ class Flag(_widget.Abstract):
         self._data.update({
             'count': _api.count(self._entity, self._variant),
             'counter_format': self._counter_format,
-            'css': self._css,
+            'css': self._btn_css,
             'entity': self._entity,
             'flagged_caption': self._flagged_caption,
             'flagged_icon': self._flagged_icon,

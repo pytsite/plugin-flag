@@ -4,6 +4,11 @@
 ## Changelog
 
 
+### 4.2 (2019-02-12)
+
+New `widget.Flag.btn_css` attribute added.
+
+
 ### 4.1.1 (2019-02-12)
 
 - JS dependencies cleaned up.
