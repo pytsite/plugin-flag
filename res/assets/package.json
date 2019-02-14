@@ -1,4 +1,7 @@
 {
   "name": "@pytsite/flag",
-  "main": "index.js"
+  "main": "index.js",
+  "dependencies": {
+    "jquery": "^3.3.1"
+  }
 }

@@ -4,6 +4,11 @@
 ## Changelog
 
 
+### 4.3 (2019-02-14)
+
+Support for `data-toggle` attribute in `widget.Flag` JS code.
+
+
 ### 4.2.1 (2019-02-12)
 
 `widget.Flag.form_group` set to `False`.

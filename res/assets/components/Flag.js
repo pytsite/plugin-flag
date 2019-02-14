@@ -2,7 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import httpApi from '@pytsite/http-api';
 import setupWidget from '@pytsite/widget';
-import ReactDOM from "react-dom";
+import ReactDOM from 'react-dom';
+import $ from 'jquery';
 import './flag.scss';
 
 export default class Flag extends React.Component {
@@ -45,6 +46,8 @@ export default class Flag extends React.Component {
                 count: r.count,
                 isFlagged: r.status,
             });
+
+            $(`[data-toggle="pytsite-flag"][data-flag-variant="${this.props.variant}"][data-target="${this.props.entity}"]`).text(r.count);
         });
     }
 
