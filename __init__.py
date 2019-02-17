@@ -10,6 +10,7 @@ from pytsite import semver as _semver
 from . import _model as model, _widget as widget
 from ._api import define, create, count, delete_all, is_flagged, toggle, delete, is_defined, find, on_flag_create, \
     on_flag_delete
+from ._model import Flag
 
 
 def plugin_load():

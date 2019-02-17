@@ -4,6 +4,11 @@
 ## Changelog
 
 
+### 4.5.1 (2019-02-17)
+
+`model.Flag` exposed directly to public API.
+
+
 ### 4.5 (2019-02-17)
 
 Events signatures changed.
