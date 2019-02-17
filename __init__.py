@@ -8,7 +8,8 @@ from pytsite import semver as _semver
 
 # Public API
 from . import _model as model, _widget as widget
-from ._api import define, create, count, delete_all, is_flagged, toggle, delete, is_defined, find
+from ._api import define, create, count, delete_all, is_flagged, toggle, delete, is_defined, find, on_flag_create, \
+    on_flag_delete
 
 
 def plugin_load():
@@ -63,7 +64,7 @@ def plugin_update(v_from: _semver.Version):
         for e in odm.find('flag').get():
             e.save(force=True, pre_hooks=False, after_hooks=False, update_timestamp=False)
 
-    elif v_from < '4.0':
+    if v_from < '4.0':
         # Model's fieldset changed
         from plugins import odm
         odm.reindex('flag')

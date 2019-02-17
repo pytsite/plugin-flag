@@ -4,6 +4,11 @@
 ## Changelog
 
 
+### 4.4 (2019-02-17)
+
+New shortcut functions added: `on_flag_create()`, `on_flag_delete()`.
+
+
 ### 4.3 (2019-02-14)
 
 Support for `data-toggle` attribute in `widget.Flag` JS code.

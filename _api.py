@@ -4,6 +4,7 @@ __author__ = 'Oleksandr Shepetko'
 __email__ = 'a@shepetko.com'
 __license__ = 'MIT'
 
+from typing import Callable as _Callable
 from pytsite import events as _events, errors as _errors
 from plugins import auth as _auth, odm as _odm
 
@@ -128,3 +129,15 @@ def delete_all(entity: _odm.model.Entity) -> int:
         r += 1
 
     return r
+
+
+def on_flag_create(handler: _Callable, priority: int = 0):
+    """Shortcut
+    """
+    _events.listen('flag@create', handler, priority)
+
+
+def on_flag_delete(handler, priority: int = 0):
+    """Shortcut
+    """
+    _events.listen('flag@delete', handler, priority)
