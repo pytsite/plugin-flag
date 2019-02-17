@@ -4,6 +4,11 @@
 ## Changelog
 
 
+### 4.5 (2019-02-17)
+
+Events signatures changed.
+
+
 ### 4.4 (2019-02-17)
 
 New shortcut functions added: `on_flag_create()`, `on_flag_delete()`.
