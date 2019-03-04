@@ -1,6 +1,6 @@
 {
   "name": "flag",
-  "version": "4.5.1",
+  "version": "4.6",
   "description": {
     "en": "Flag",
     "ru": "Flag",
@@ -19,7 +19,7 @@
       "auth_storage_odm": "^4.4",
       "auth_ui": "^4.10",
       "http_api": "^3.4",
-      "odm": "^5.10",
+      "odm": "^6.0",
       "odm_auth": "^3.0",
       "permissions": "^1.2",
       "query": "^1.3",

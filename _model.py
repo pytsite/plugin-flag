@@ -33,9 +33,9 @@ class Flag(_odm_auth.model.OwnedEntity):
     def _setup_fields(self):
         """Hook
         """
-        self.define_field(_odm.field.String('variant', required='True', default='like'))
-        self.define_field(_odm.field.Ref('entity', required=True))
-        self.define_field(_auth_storage_odm.field.User('author', required=True))
+        self.define_field(_odm.field.String('variant', is_required=True, default='like'))
+        self.define_field(_odm.field.Ref('entity', is_required=True))
+        self.define_field(_auth_storage_odm.field.User('author', is_required=True))
         self.define_field(_odm.field.Decimal('score', default=1.0))
 
     def _setup_indexes(self):
