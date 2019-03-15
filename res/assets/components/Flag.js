@@ -41,6 +41,11 @@ export default class Flag extends React.Component {
     }
 
     onClick() {
+        this.setState({
+            count: this.state.isFlagged ? this.state.count - 1 : this.state.count + 1,
+            isFlagged: !this.state.isFlagged,
+        });
+
         httpApi.patch(`flag/${this.props.variant}/${this.props.entity}`).then(r => {
             this.setState({
                 count: r.count,

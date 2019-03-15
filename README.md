@@ -4,6 +4,11 @@
 ## Changelog
 
 
+### 4.6.1 (2019-03-15)
+
+Fixed responsiveness issue of the widget.
+
+
 ### 4.6 (2019-03-04)
 
 Support of `odm-6.0`.
