@@ -4,6 +4,11 @@
 ## Changelog
 
 
+### 4.6.2 (2019-04-19)
+
+Error management improved.
+
+
 ### 4.6.1 (2019-03-15)
 
 Fixed responsiveness issue of the widget.

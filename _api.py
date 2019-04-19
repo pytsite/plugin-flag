@@ -76,14 +76,15 @@ def create(entity: _odm.model.Entity, author: _auth.model.AbstractUser = None, v
     elif score > f_info['max_score']:
         score = f_info['max_score']
 
+    # Save
     flag = _odm.dispense('flag').f_set_multiple({
         'entity': entity,
         'author': author,
         'variant': variant,
         'score': score,
-    }).save()
-
+    })
     _events.fire('flag@create', flag=flag)
+    flag.save()
 
     return count(entity, variant)
 
@@ -94,12 +95,10 @@ def delete(entity: _odm.model.Entity, author: _auth.model.AbstractUser, variant:
     if not is_flagged(entity, author, variant):
         return count(entity, variant)
 
-    try:
-        flag = find(variant).eq('entity', entity).eq('author', author).first().delete()
-        _events.fire('flag@delete', flag=flag)
-    except _odm.error.EntityDeleted:
-        # Entity was deleted by another instance
-        pass
+    # Find and delete
+    flag = find(variant).eq('entity', entity).eq('author', author).first()
+    _events.fire('flag@delete', flag=flag)
+    flag.delete()
 
     return count(entity, variant)
 

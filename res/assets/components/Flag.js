@@ -53,6 +53,14 @@ export default class Flag extends React.Component {
             });
 
             $(`[data-toggle="pytsite-flag"][data-flag-variant="${this.props.variant}"][data-target="${this.props.entity}"]`).text(r.count);
+        }).catch(r => {
+            if (r.hasOwnProperty('responseJSON') && r.responseJSON.hasOwnProperty('error')) {
+                alert(r.responseJSON.error);
+                this.setState({
+                    count: this.state.isFlagged ? this.state.count - 1 : this.state.count + 1,
+                    isFlagged: !this.state.isFlagged,
+                });
+            }
         });
     }
 
