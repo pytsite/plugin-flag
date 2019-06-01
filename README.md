@@ -4,6 +4,11 @@
 ## Changelog
 
 
+### 4.8 (2019-06-02)
+
+Events `flag` argument renamed to `flg`.
+
+
 ### 4.7 (2019-06-02)
 
 Support of `odm_auth-4.0`.

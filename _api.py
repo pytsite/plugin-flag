@@ -83,7 +83,7 @@ def create(entity: odm.model.Entity, author: auth.model.AbstractUser = None, var
         'variant': variant,
         'score': score,
     })
-    events.fire('flag@create', flag=flag)
+    events.fire('flag@create', flg=flag)
     flag.save()
 
     return count(entity, variant)
@@ -97,7 +97,7 @@ def delete(entity: odm.model.Entity, author: auth.model.AbstractUser, variant: s
 
     # Find and delete
     flag = find(variant).eq('entity', entity).eq('author', author).first()
-    events.fire('flag@delete', flag=flag)
+    events.fire('flag@delete', flg=flag)
     flag.delete()
 
     return count(entity, variant)
