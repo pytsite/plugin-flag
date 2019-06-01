@@ -4,8 +4,6 @@ __author__ = 'Oleksandr Shepetko'
 __email__ = 'a@shepetko.com'
 __license__ = 'MIT'
 
-from pytsite import semver as _semver
-
 # Public API
 from . import _model as model, _widget as widget
 from ._api import define, create, count, delete_all, is_flagged, toggle, delete, is_defined, find, on_flag_create, \
@@ -56,7 +54,10 @@ def plugin_load_wsgi():
     http_api.handle('PATCH', 'flag/<variant>/<entity>', _http_api_controllers.Toggle, 'flag@toggle')
 
 
-def plugin_update(v_from: _semver.Version):
+from pytsite import semver
+
+
+def plugin_update(v_from: semver.Version):
     if v_from < '2.3':
         # Type of the field 'entity' was changed from Ref to ManualRef,
         # so it's necessary to re-save all the flags to update this field

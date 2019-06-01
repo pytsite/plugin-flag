@@ -4,6 +4,11 @@
 ## Changelog
 
 
+### 4.7 (2019-06-02)
+
+Support of `odm_auth-4.0`.
+
+
 ### 4.6.2 (2019-04-19)
 
 Error management improved.
