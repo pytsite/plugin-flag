@@ -4,8 +4,9 @@ __author__ = 'Oleksandr Shepetko'
 __email__ = 'a@shepetko.com'
 __license__ = 'MIT'
 
+import htmler
 from typing import Union, Optional
-from pytsite import html, lang
+from pytsite import lang
 from plugins import widget, odm, auth, auth_ui
 from . import _api
 
@@ -32,7 +33,7 @@ class Flag(widget.Abstract):
         if not auth.get_current_user().is_authenticated and not self._link:
             self._link = auth_ui.sign_in_url()
 
-    def _get_element(self, **kwargs) -> Optional[html.Element]:
+    def _get_element(self, **kwargs) -> Optional[htmler.Element]:
         """Hook
         """
         self._data.update({
@@ -54,7 +55,7 @@ class Flag(widget.Abstract):
             'variant': self._variant,
         })
 
-        return html.Div(css='widget-component')
+        return htmler.Div(css='widget-component')
 
 
 class Like(Flag):

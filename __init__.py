@@ -10,6 +10,9 @@ from ._api import define, create, count, delete_all, is_flagged, toggle, delete,
     on_flag_delete
 from ._model import Flag
 
+# Locally needed imports
+from semaver import Version as _Version
+
 
 def plugin_load():
     from pytsite import events
@@ -54,10 +57,7 @@ def plugin_load_wsgi():
     http_api.handle('PATCH', 'flag/<variant>/<entity>', _http_api_controllers.Toggle, 'flag@toggle')
 
 
-from pytsite import semver
-
-
-def plugin_update(v_from: semver.Version):
+def plugin_update(v_from: _Version):
     if v_from < '2.3':
         # Type of the field 'entity' was changed from Ref to ManualRef,
         # so it's necessary to re-save all the flags to update this field
