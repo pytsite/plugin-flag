@@ -4,6 +4,11 @@
 ## Changelog
 
 
+### 4.9.2 (2019-07-13)
+
+`plugin.json` fix.
+
+
 ### 4.9.1 (2019-07-13)
 
 `plugin.json` fix.

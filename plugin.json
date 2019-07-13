@@ -1,6 +1,6 @@
 {
   "name": "flag",
-  "version": "4.9.1",
+  "version": "4.9.2",
   "description": {
     "en": "Flag",
     "ru": "Flag",
@@ -16,7 +16,7 @@
     "pytsite": ">=9.0",
     "packages": {
       "htmler": ">=0.1",
-      "seamver": ">=0.1"
+      "semaver": ">=0.1"
     },
     "plugins": {
       "auth": "^3.13",
